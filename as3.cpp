@@ -89,11 +89,12 @@ void dumpLine(const Vector &v){
 
 /* DECODING FUNCTIONS */ 
 //TODO --  j-type function 
-// WRITE TO FILE 
-void decode(const Vector &v, unsigned num){
+void decode(const Vector &v, unsigned num, std::ofstream &file){
   
-  std::cout << "insts:\n"; 
+  file.open("log.txt"); 
+  file << "insts:\n"; 
   int k = 0; 
+  
   while(k < v.size() - num)
   { 
     u.encodedValue = v[k]; 
@@ -101,69 +102,69 @@ void decode(const Vector &v, unsigned num){
     if(u.rtype.op == 0)
     {
       if(u.rtype.fn == 33){
-        std::cout << std::setw(4) 
+        file << std::setw(4) 
         << k << ": " << "addu  " << regNum[u.rtype.rd] 
         << "," << regNum[u.rtype.rs] << "," << regNum[u.rtype.rt] << std::endl; 
       }
       else if(u.rtype.fn == 36){
-        std::cout << std::setw(4) << k << ": " << "and " << regNum[u.rtype.rd] << "," 
+        file << std::setw(4) << k << ": " << "and " << regNum[u.rtype.rd] << "," 
         << regNum[u.rtype.rs] << "," << regNum[u.rtype.rt] << std::endl;
       }
       else if(u.rtype.fn == 26){
-        std::cout << std::setw(4)<< k << ": " << "div " << regNum[u.rtype.rs] << ","
+        file << std::setw(4)<< k << ": " << "div " << regNum[u.rtype.rs] << ","
         << regNum[u.rtype.rt] << std::endl; 
       }
       else if(u.rtype.fn == 37){
-        std::cout << std::setw(4)<< k << ": "  << "or " << regNum[u.rtype.rd] << "," 
+        file << std::setw(4)<< k << ": "  << "or " << regNum[u.rtype.rd] << "," 
         << regNum[u.rtype.rs] << "," << regNum[u.rtype.rt] << std::endl;
       }
       else if(u.rtype.fn == 35){
-        std::cout << std::setw(4)<< k << ": " << "subu " << regNum[u.rtype.rd] << "," 
+        file << std::setw(4)<< k << ": " << "subu " << regNum[u.rtype.rd] << "," 
         << regNum[u.rtype.rs] << "," << regNum[u.rtype.rt] << std::endl;
       }
       else if(u.rtype.fn == 42){
-        std::cout << std::setw(4) << k << ": " << "slt " << regNum[u.rtype.rd] << "," 
+        file << std::setw(4) << k << ": " << "slt " << regNum[u.rtype.rd] << "," 
         << regNum[u.rtype.rs] << "," << regNum[u.rtype.rt] << std::endl;
       }
       else if(u.rtype.fn == 24){
-        std::cout << std::setw(4)<< k << ": " << "mult " << regNum[u.rtype.rs] << "," 
+        file << std::setw(4)<< k << ": " << "mult " << regNum[u.rtype.rs] << "," 
         << regNum[u.rtype.rt] << std::endl;
       }
       else if(u.rtype.fn == 16){
-        std::cout << std::setw(4)<< k << ": " << "mfhi " << regNum[u.rtype.rs] 
+        file << std::setw(4)<< k << ": " << "mfhi " << regNum[u.rtype.rs] 
         << std::endl;
       }
       else if(u.rtype.fn == 18){
-        std::cout << std::setw(4)<< k << ": " << "mflo " << regNum[u.rtype.rs] 
+        file << std::setw(4)<< k << ": " << "mflo " << regNum[u.rtype.rs] 
         << std::endl; 
       }
       else if(u.rtype.fn == 12){
-        std::cout << std::setw(4)<< k << ": " << "syscall\n";
+        file << std::setw(4)<< k << ": " << "syscall\n";
       }
     }
     else if(u.jtype.op == 2){
-      std::cout << std::setw(4)<< k << ": " << "j" << std::endl;  
+      file << std::setw(4)<< k << ": " << "j" << std::endl;  
     }
     else
     {
       if(u.itype.op == 9){
-        std::cout << std::setw(4)<< k << ": "  << "addiu " << regNum[u.itype.rt] 
+        file << std::setw(4)<< k << ": "  << "addiu " << regNum[u.itype.rt] 
         << "," << regNum[u.itype.rs] << "," << u.itype.im << std::endl; 
       }
       else if(u.itype.op == 4){
-        std::cout << std::setw(4)<< k << ": "  << "beq " << regNum[u.itype.rs] << "," 
+        file << std::setw(4)<< k << ": "  << "beq " << regNum[u.itype.rs] << "," 
         << regNum[u.itype.rt] << "," << u.itype.im <<std::endl; 
       }
       else if(u.itype.op == 5){
-        std::cout << std::setw(4)<< k << ": " << "bne " << regNum[u.itype.rs] << "," 
+        file << std::setw(4)<< k << ": " << "bne " << regNum[u.itype.rs] << "," 
         << regNum[u.itype.rt] << u.itype.im << std::endl; 
       }
       else if(u.itype.op == 35){
-        std::cout << std::setw(4)<< k << ": " << "lw  " << regNum[u.itype.rt] << "," 
+        file << std::setw(4)<< k << ": " << "lw  " << regNum[u.itype.rt] << "," 
         << u.itype.im << "(" << regNum[u.itype.rs] << ")" << std::endl; 
       }
       else if(u.itype.op == 43){
-        std::cout << std::setw(4)<< k << ": " << "sw  " << regNum[u.itype.rt] << "," 
+        file << std::setw(4)<< k << ": " << "sw  " << regNum[u.itype.rt] << "," 
         << u.itype.im  << "(" << regNum[u.itype.rs] << ")" << std::endl; 
       } 
     }   
@@ -171,10 +172,12 @@ void decode(const Vector &v, unsigned num){
   }
 
   // print data -- format width 
-  std::cout << "\ndata:\n"; 
+  file << "\ndata:\n"; 
   for(int j = k; j < v.size(); ++j){
-    std::cout << std::setw(4)<< k++ << ": " << v[j] << std::endl; 
+    file << std::setw(4)<< k++ << ": " << v[j] << std::endl; 
   }  
+  
+  file.close(); 
 }
 
 /* SIMULATION FUNCTIONS */ 
@@ -293,7 +296,8 @@ int main(int argc, char* argv[])
   
   // create file streams -- inputFile and outputFile
   std::ifstream inputFile(argv[1]);
-  
+  std::ofstream outputFile; 
+  outputFile.open("log.txt");
   
   // read file 
   while(std::getline(inputFile, line)){
@@ -324,7 +328,7 @@ int main(int argc, char* argv[])
   machineState["$gp"] = dataStart;
   
   /* PRINT OUT ASSEMBLY FILE */ 
-  decode(lines, numWords); 
+  decode(lines, numWords, outputFile); 
   
   // spacer 
   std::cout << std::endl; 
@@ -365,6 +369,7 @@ int main(int argc, char* argv[])
      
   //close file 
   inputFile.close(); 
+  outputFile.close(); 
   
   return 0; 
 }
